@@ -1,5 +1,7 @@
 package com.raley.service.impl;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -14,7 +16,7 @@ import com.raley.service.ResetPasswordService;
 
 @Service
 public class ResetPasswordServiceImpl implements ResetPasswordService {
-    Logger logger = LoggerFactory.getLogger(ResetPasswordServiceImpl.class);
+	Logger logger = LoggerFactory.getLogger(ResetPasswordServiceImpl.class);
 
 	@Autowired
 	private UserDao userDao;
@@ -32,8 +34,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 	@Override
 	public User reset(String email) {
 		User loginObj = userDao.findByEmail(email);
-		String password =generatePassword();
-		logger.info("Reset password is : "+password);
+		String password = generatePassword();
+		logger.info("Reset password is : " + password);
 		loginObj.setPassword(bcryptEncoder.encode(password));
 		return userDao.save(loginObj);
 	}
@@ -46,19 +48,25 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 		String numbers = "1234567890";
 		String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
 
-		Random random = new Random();
 		char[] password = new char[8];
 
-		password[0] = lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length()));
-		password[1] = capitalCaseLetters.charAt(random.nextInt(capitalCaseLetters.length()));
-		password[2] = specialCharacters.charAt(random.nextInt(specialCharacters.length()));
-		password[3] = numbers.charAt(random.nextInt(numbers.length()));
+		try {
 
-		for (int i = 4; i < 8; i++) {
-			password[i] = combinedChars.charAt(random.nextInt(combinedChars.length()));
+			Random random = SecureRandom.getInstanceStrong();
+			password[0] = lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length()));
+			password[1] = capitalCaseLetters.charAt(random.nextInt(capitalCaseLetters.length()));
+			password[2] = specialCharacters.charAt(random.nextInt(specialCharacters.length()));
+			password[3] = numbers.charAt(random.nextInt(numbers.length()));
+
+			for (int i = 4; i < 8; i++) {
+				password[i] = combinedChars.charAt(random.nextInt(combinedChars.length()));
+			}
+
+		} catch (NoSuchAlgorithmException e) {
+			logger.info(e.getMessage());
 		}
 
-		return password.toString();
+		return String.valueOf(password);
 	}
 
 }

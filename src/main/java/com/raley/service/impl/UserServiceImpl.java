@@ -1,11 +1,8 @@
 package com.raley.service.impl;
 
-import com.raley.dao.UserDao;
-import com.raley.model.User;
-import com.raley.model.UserDto;
-import com.raley.service.UserService;
+import java.util.Arrays;
+import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,10 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import com.raley.dao.UserDao;
+import com.raley.model.User;
+import com.raley.model.UserDto;
+import com.raley.service.UserService;
 
 
 @Service(value = "userService")
