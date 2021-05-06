@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.raley.model.ApiResponse;
+import com.raley.model.Response;
 import com.raley.model.ResetPasswordDto;
 import com.raley.model.User;
 import com.raley.model.UserDto;
 import com.raley.service.ResetPasswordService;
 import com.raley.service.UserService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 /**
  * @author abhay.thakur
@@ -24,6 +29,7 @@ import com.raley.service.UserService;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/vendor")
+@Api(value="VendorController")
 public class VendorController {
 	Logger logger = LoggerFactory.getLogger(VendorController.class);
 
@@ -36,24 +42,32 @@ public class VendorController {
 		this.userService = userService;
 	}
 
+	@ApiOperation(value="saveVendor" ,notes ="This method is to save vendor details")
+	@ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success|OK"),
+        @ApiResponse(code = 400, message = "Bad Request!")})
 	@PostMapping("/register")
-	public ApiResponse<User> saveVendor(@RequestBody UserDto user) {
+	public Response<User> saveVendor(@RequestBody UserDto user) {
 		if (userService.findOne(user.getEmail()) != null) {
 			logger.info("Vendor already exist.!: " + user.getEmail());
-			return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "Vendor already exist.!", null);
+			return new Response<>(HttpStatus.BAD_REQUEST.value(), "Vendor already exist.!", null);
 		} else {
 			logger.info("Vendor saved successfully " + user.getEmail());
-			return new ApiResponse<>(HttpStatus.OK.value(), "Vendor saved successfully.", userService.save(user));
+			return new Response<>(HttpStatus.OK.value(), "Vendor saved successfully.", userService.save(user));
 		}
 	}
 	
+	@ApiOperation(value="reset" ,notes ="This method is reset password")
+	@ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Success|OK"),
+        @ApiResponse(code = 400, message = "Bad Request!")})
 	@PostMapping("/resetPassword")
-	public ApiResponse<Object> reset(@RequestBody ResetPasswordDto resetPassword) {
+	public Response<Object> reset(@RequestBody ResetPasswordDto resetPassword) {
 		logger.info("find the email : "+resetPassword.getEmail()+ " for reset the password");
 		if (userService.findOne(resetPassword.getEmail()) == null) {
-			return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "Email not exist.!", null);
+			return new Response<>(HttpStatus.BAD_REQUEST.value(), "Email not exist.!", null);
 		} else {
-			return new ApiResponse<>(HttpStatus.OK.value(), "Password  reset successfully.",
+			return new Response<>(HttpStatus.OK.value(), "Password  reset successfully.",
 					resetPasswordService.reset(resetPassword.getEmail()));
 		}
 	}
