@@ -8,5 +8,6 @@ import com.raley.model.User;
 @Repository
 public interface UserDao extends CrudRepository<User, Integer> {
 
+	//finds user by email id in db
     User findByEmail(String email);
 }

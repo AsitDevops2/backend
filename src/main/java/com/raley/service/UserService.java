@@ -1,21 +1,13 @@
 package com.raley.service;
 
-import java.util.List;
-
 import com.raley.model.User;
 import com.raley.model.UserDto;
 
 public interface UserService {
 
+	//save user in db
     User save(UserDto user);
     
-    //List<User> findAll();
-    
-    //void delete(int id);
-
+    //finds user by email id
     User findOne(String email);
-
-    //User findById(int id);
-
-    //UserDto update(UserDto userDto);
 }
