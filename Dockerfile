@@ -1,4 +1,5 @@
 From openjdk:8
 Expose 8085
-ADD /target/raleyRegistration-1.0.jar raleyRegistration-1.0.jar
-ENTRYPOINT ["java","-jar","raleyRegistration-1.0.jar"]
+ADD /raleyRegistration.jar raleyRegistration.jar
+ENTRYPOINT ["java","-jar","raleyRegistration.jar"]
+CMD java - jar raleyRegistration.jar
