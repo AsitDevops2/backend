@@ -97,7 +97,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 		}
 		catch (NoSuchAlgorithmException e) {
 			logger.error(e.getMessage());
-			e.printStackTrace();
 		}
 
 		return String.valueOf(password);
