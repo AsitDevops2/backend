@@ -1,21 +1,25 @@
 package com.raley.controller;
 
+import java.text.MessageFormat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.raley.model.Response;
 import com.raley.model.ResetPasswordDto;
+import com.raley.model.Response;
 import com.raley.model.User;
 import com.raley.model.UserDto;
 import com.raley.service.ResetPasswordService;
 import com.raley.service.UserService;
+import com.raley.utility.EmailUtility;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,9 +36,9 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "VendorController")
 public class VendorController {
 	
-	//Creating logger obbject for logging(uses slf4j logger)
+	//Creating logger object for logging(uses slf4j logger)
 	Logger logger = LoggerFactory.getLogger(VendorController.class);
-
+	
 	//Injecting userService bean
 	@Autowired
 	private UserService userService;
@@ -89,4 +93,5 @@ public class VendorController {
 					resetPasswordService.reset(resetPassword.getEmail()));
 		}
 	}
+
 }

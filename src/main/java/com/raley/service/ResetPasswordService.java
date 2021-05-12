@@ -12,4 +12,7 @@ public interface ResetPasswordService
 	
 	//save generated password in db
 	public User reset(String email);
+	
+	//sends mail to requested user
+	public void sendEmail(String recipient,String password);
 }

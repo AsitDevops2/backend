@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.raley.dao.UserDao;
 import com.raley.model.User;
 import com.raley.service.ResetPasswordService;
+import com.raley.utility.EmailUtility;
 
 @Service
 public class ResetPasswordServiceImpl implements ResetPasswordService {
@@ -23,6 +24,9 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 	//injecting UserDao bean to interact with db
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private EmailUtility emailUtility;
 	
 	//to encrypt the password
 	@Autowired
@@ -56,6 +60,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 		logger.info("Resetted password for {} is : {}",email,password);
 		
 		loginObj.setPassword(bcryptEncoder.encode(password));	//encoding the password
+		sendEmail(email, password);		//call to sendEmail() function
 		
 		logger.info("Password saved into db successfully");
 		return userDao.save(loginObj);
@@ -96,6 +101,14 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 		}
 
 		return String.valueOf(password);
+	}
+
+	/*
+	 * Sends email to the requested recipient
+	 */
+	@Override
+	public void sendEmail(String recipient,String password) {
+		emailUtility.sendEmail(recipient,password);	//call to sendEmail() of EmailUtility class
 	}
 
 }
